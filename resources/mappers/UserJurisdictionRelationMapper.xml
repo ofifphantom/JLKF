@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 崔文杰 -->
+<mapper namespace="com.jl.mis.mapper.UserJurisdictionRelationMapper">
+    <!-- 根据用户id查询菜单列表 -->
+    <select id="listUserJurisdictionByUserTypeId" parameterType="java.lang.Integer" resultMap="jurisdiction_relation_entity">
+        SELECT * FROM user_jurisdiction_relation
+        <where>
+            <if test="_parameter.containsKey('userTypeId')">
+                user_type_id = #{userTypeId}
+            </if>
+        </where>
+    </select>
+    <resultMap id="jurisdiction_relation_entity" type="com.jl.mis.model.entity.UserJurisdictionRelationEntity">
+        <id property="id" column="id" javaType="java.lang.Integer" />
+        <result property="menuDetailId" column="menu_detail_id" javaType="java.lang.Integer" />
+        <result property="userTypeId" column="user_type_id" javaType="java.lang.Integer" />
+    </resultMap>
+</mapper>

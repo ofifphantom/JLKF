@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 崔文杰 -->
+<mapper namespace="com.jl.mis.mapper.UserTypeMapper">
+    <!-- 查询所有用户类型 -->
+    <select id="listUserTypeByUserTypeId" resultMap="user_type_entity">
+        SELECT * FROM user_type
+        WHERE id IN (${userTypeId})
+    </select>
+    <select id="listUserTypeAll" resultMap="user_type_entity">
+        SELECT * FROM user_type
+    </select>
+    <resultMap id="user_type_entity" type="com.jl.mis.model.entity.UserTypeEntity">
+        <id property="id" column="id" />
+        <result property="userTypeName" column="user_type_name" />
+    </resultMap>
+</mapper>

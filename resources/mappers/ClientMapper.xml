@@ -1,0 +1,107 @@
+<!-- 郑国超 2018/5/24 客户表sql -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.ClientMapper">
+    <resultMap id="clientResultMap" type="com.jl.mis.model.entity.ClientEntity">
+        <id property="id" column="id"/>
+        <id property="isVip" column="is_vip"/>
+        <id property="userName" column="user_name"/>
+        <id property="loginName" column="login_name"/>
+        <id property="audienceId" column="audience_id"/>
+        <id property="state" column="state"/>
+        <id property="consultNumber" column="consult_number"/>
+        <id property="awaitTime" column="await_time"/>
+        <id property="entranceTime" column="entrance_time"/>
+        <id property="consultTime" column="consult_time"/>
+        <id property="finishTime" column="finish_time"/>
+        <id property="enterQueue" column="enter_queue"/>
+        <id property="remark" column="remark"/>
+    </resultMap>
+    <!-- 查询所有的咨询完成的列表 -->
+    <select id="selectClientAll" resultMap="clientResultMap">select * from client where state=#{state}</select>
+    <!--&lt;!&ndash; 根据条件查询咨询完成的列表 &ndash;&gt;-->
+    <!--<select id="" resultMap="clientResultMaps">-->
+    <!--</select>-->
+    <!-- 添加客户 -->
+    <insert id="insertClient">
+     insert into client (is_vip, user_name, login_name, audience_id, state, consult_number, await_time, entrance_time, consult_time, finish_time, enter_queue) values (#{ClientEntity.isVip},#{ClientEntity.userName},#{ClientEntity.loginName},#{ClientEntity.audienceId},#{ClientEntity.state},#{ClientEntity.consultNumber},#{ClientEntity.awaitTime},#{ClientEntity.entranceTime},#{ClientEntity.consultTime},#{ClientEntity.finishTime},#{ClientEntity.enterQueue})
+    </insert>
+    <!-- 修改客户信息 -->
+    <update id="updateClient">
+     update client set audience_id=#{ClientEntity.audienceId},state=#{ClientEntity.state},consult_number=#{ClientEntity.consultNumber},await_time=#{ClientEntity.awaitTime},entrance_time=#{ClientEntity.entranceTime},consult_time=#{ClientEntity.consultTime},finish_time=#{ClientEntity.finishTime},enter_queue=#{ClientEntity.enterQueue} where id=#{ClientEntity.id} and state=#{state}
+    </update>
+    <!-- 查询在线客服所接待的人数 -->
+    <select id="selectClientToLeisure" resultType="java.lang.Integer">select count(id) from client where audience_id=#{id} and state=#{state}</select>
+    <!-- 查看等待中的客户是否是vip -->
+    <select id="selectIdToVip" resultType="java.lang.Integer">select is_vip from client where login_name=#{login_name} and state=#{state}</select>
+
+    <!-- 根据登陆账号和聊天状态查询 -->
+    <select id="selectClientToLoginName" resultMap="clientResultMap">select * from client where login_name=#{login_name} and state=#{state}</select>
+
+    <!-- 查看当前客服所有正在聊天的用户 -->
+    <select id="selectClientToAudienceId" resultMap="clientResultMap">select * from client where audience_id=#{audience_id} and state=#{state}</select>
+
+    <!-- 修改客户信息状态 用做用户断开连接 -->
+    <update id="updateClientState">update client set state=#{ClientEntity.state},consult_number=#{ClientEntity.consultNumber},finish_time=#{ClientEntity.finishTime},consult_time=#{ClientEntity.consultTime} where login_name=#{ClientEntity.loginName} and state=#{state}</update>
+
+    <!-- 修改客户状态信息 用做等待结束开始聊天 -->
+    <update id="updateClientNotWait">update client set state=#{state},entrance_time=#{ClientEntity.entranceTime},audience_id=#{ClientEntity.audienceId},await_time=#{ClientEntity.awaitTime} where login_name=#{ClientEntity.loginName} and state=#{ClientEntity.state}</update>
+
+    <!-- 查看客户信息 用作展示 -->
+    <select id="listClientByConditionLimit" resultMap="clientResultMap">select * from client<where>
+            <if test="_parameter.containsKey('condition')">
+                ${condition}
+            </if>
+            AND state = 2
+        </where>
+        ORDER BY client.finish_time DESC
+        LIMIT #{startNumber},#{showNumber}
+    </select>
+    <!-- 根据 id 查询咨询信息 -->
+    <select id="getClientByClientId" resultMap="clientResultMap">
+        SELECT * FROM client
+        <where>
+            <if test="_parameter.containsKey('clientId')">
+                id = #{clientId}
+            </if>
+            AND state = 2
+        </where>
+    </select>
+    <!-- 根据当前用户查询当前用户正在聊天的用户 -->
+    <select id="selectClient" resultMap="clientResultMap">select * from client where audience_id=#{providerId} and state=1;</select>
+    <!-- 查询所有等待状态的客户 -->
+    <select id="selectToWait" resultMap="clientResultMap">select * from client where state=0;</select>
+    <!-- 查询当前用户聊天完成的客户 -->
+    <select id="selectToFinish" resultMap="clientResultMap">select * from client where state=2 and audience_id=#{providerId};</select>
+
+
+    <!-- 根据客户id查询客户的所有聊天信息id -->
+        <select id="selectClientToClientLoginName" resultMap="clientResultMap">select * from client where login_name=#{login_name};</select>
+
+    <select id="listClientByCondition" resultMap="clientResultMap">
+        SELECT * FROM client
+        <where>
+            <if test="_parameter.containsKey('condition')">
+                ${condition}
+            </if>
+            AND state = 2
+        </where>
+    </select>
+
+
+    <!-- 根据当前登陆名查询正在聊天的客户 -->
+    <select id="listToChatting" resultMap="clientResultMap">select * from client where login_name=#{login_name} and  state=#{state};</select>
+
+    <update id="updateClientByState">update client set state=#{ClientEntity.state},consult_number=#{ClientEntity.consultNumber},finish_time=#{ClientEntity.finishTime},consult_time=#{ClientEntity.consultTime},remark=#{ClientEntity.remark} where login_name=#{ClientEntity.loginName} and state=#{state}</update>
+ 	
+ 	<delete id="delClientWait">
+          delete from client where login_name=#{login_name} and state=#{state}
+    </delete>
+
+    <select id="findByWait" resultMap="clientResultMap">
+      select * from jl_database.client where state=#{state};
+    </select>
+    <delete id="delClientSevenDaysAgo">
+        DELETE FROM jl_database.client  where DATE_SUB(CURDATE(), INTERVAL 7 DAY) >= date(entrance_time)
+    </delete>
+
+</mapper>

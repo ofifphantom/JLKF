@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 崔文杰 -->
+<mapper namespace="com.jl.mis.mapper.MenuDetailMapper">
+    <!-- 根据主键id或者父键id查询菜单 -->
+    <select id="listMenuById" parameterType="java.lang.String" resultMap="menu_detail_entity">
+        SELECT * FROM menu_detail
+        <where>
+            <if test="_parameter.containsKey('ids')">
+                id IN (${ids}) AND is_effective = 1
+            </if>
+        </where>
+    </select>
+    <resultMap id="menu_detail_entity" type="com.jl.mis.model.entity.MenuDetailEntity">
+        <id property="id" column="id" javaType="java.lang.Integer" />
+        <result property="menuName" column="menu_name" javaType="java.lang.String"/>
+        <result property="menuUrl" column="menu_url" javaType="java.lang.String"/>
+        <result property="menuIconUrl" column="menu_icon_url" javaType="java.lang.String"/>
+        <result property="menuSort" column="menu_sort" javaType="java.lang.Integer"/>
+        <result property="menuParentId" column="menu_parent_id" javaType="java.lang.Integer"/>
+        <result property="isEffective" column="is_effective" javaType="java.lang.Integer"/>
+    </resultMap>
+</mapper>

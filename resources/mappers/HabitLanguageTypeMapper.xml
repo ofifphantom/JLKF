@@ -1,0 +1,26 @@
+<!-- 常用语类型表sql -->
+<!-- 郑国超 2018-5-22 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.HabitLanguageTypeMapper">
+    <resultMap id="HabitLanguageTypeResultMap" type="com.jl.mis.model.entity.HabitLanguageTypeEntity">
+        <result column="id" property="id"></result>
+        <result column="habit_language_type_name" property="habitLanguageTypeName"></result>
+        <result column="provider_id" property="providerId"></result>
+    </resultMap>
+    <!-- 查询用户下的模块类型 -->
+    <select id="selectHabitLanguageType" resultMap="HabitLanguageTypeResultMap">
+        select * from habit_language_type where habit_language_type.provider_id=#{provider_id}
+    </select>
+    <!-- 删除模块类型 -->
+    <delete id="delHabitLanguageType" >
+      delete from habit_language_type where id=#{id}
+    </delete>
+    <!-- 增加模块类型 -->
+    <insert id="insertHabitLanguageType" >
+    insert into habit_language_type(habit_language_type_name, provider_id) values (#{HabitLanguageTypeEntity.habitLanguageTypeName},#{HabitLanguageTypeEntity.providerId})
+    </insert>
+    <!-- 修改常用语类型 根据id修改 -->
+    <update id="updateHabitLanguageRelation">
+      update habit_language_type set habit_language_type.habit_language_type_name=#{HabitLanguageTypeEntity.habitLanguageTypeName} where id=#{HabitLanguageTypeEntity.id}
+    </update>
+</mapper>

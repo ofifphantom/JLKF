@@ -1,0 +1,44 @@
+<!-- 常用语表sql -->
+<!-- 郑国超 2018-5-22 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.HabitLanguageRelationMapper">
+    <!-- 单表查询的返回值 -->
+    <resultMap id="HabitLanguageRelationResultMap" type="com.jl.mis.model.entity.HabitLanguageRelationEntity">
+        <result column="id" property="id"></result>
+        <result column="habitlanguage_content" property="habitlanguageContent"></result>
+        <result column="habitLanguage_type_id" property="habitLanguageTypeId"></result>
+    </resultMap>
+    <!-- 两表查询的返回值 -->
+    <resultMap id="HabitLanguageRelationResult" type="com.jl.mis.model.entity.HabitLanguageRelationType">
+        <result column="id" property="id"></result>
+        <result column="habit_language_type_name" property="habitLanguageTypeName"></result>
+        <result column="provider_id" property="providerId"></result>
+        <result column="id" property="id"></result>
+        <result column="habitlanguage_content" property="habitlanguageContent"></result>
+        <result column="habitLanguage_type_id" property="habitLanguageTypeId"></result>
+    </resultMap>
+    <!-- 根据模块名称查询常用语 -->
+    <select id="selectHabitLanguageRelationToType" resultMap="HabitLanguageRelationResultMap">
+        select * from habit_language_relation where habit_language_relation.habit_language_type_id=#{habit_language_type_id}
+    </select>
+    <!-- 在当前类型下添加常用语 -->
+    <insert id="insertHabitLanguageRelationToType">
+        insert into habit_language_relation(habit_language_type_id, habitlanguage_content) values (#{HabitLanguageRelationEntity.habitLanguageTypeId},#{HabitLanguageRelationEntity.habitlanguageContent})
+    </insert>
+    <!-- 删除单条常用语 -->
+    <delete id="delHabitLanguageRelation">
+        delete from habit_language_relation where id=#{id}
+    </delete>
+    <!-- 删除该类型id下所有的常用语 -->
+    <delete id="delHabitLanguageRelationToTypeId">
+        delete from habit_language_relation where habit_language_type_id=#{habit_language_type_id}
+    </delete>
+    <!-- 根据id修改常用语 -->
+    <update id="updateHabitLanguageRelationToid">
+      update habit_language_relation set habit_language_relation.habitlanguage_content=#{HabitLanguageRelationEntity.habitlanguageContent} where id=#{id}
+    </update>
+    <!-- 查询所有的类型 和类型下的常用语 -->
+    <select id="selectAllToHabitLanguageRelation" resultType="com.jl.mis.model.entity.HabitLanguageRelationType">
+      select habit_language_type.id as typeId,habit_language_type.provider_id,habit_language_type.habit_language_type_name,habit_language_relation.id,habitlanguage_content from habit_language_relation,habit_language_type where habit_language_type_id=habit_language_type.id and provider_id=#{provider_id}
+    </select>
+</mapper>

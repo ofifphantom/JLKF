@@ -1,0 +1,36 @@
+<!-- 聊天记录表 郑国超 9/24-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.ChattingRecordsMapper">
+
+    <resultMap id="chat_record_entity" type="com.jl.mis.model.entity.ChattingRecordsEntity">
+        <id property="id" column="id" />
+        <result property="clientId" column="client_id"  />
+        <result property="startTime" column="start_time" />
+        <result property="records" column="records" />
+        <result property="sender" column="sender" />
+    </resultMap>
+    <!-- 添加一条聊天记录 -->
+  
+  
+  <insert id="insertChatRecords">
+    insert into chatting_records (client_id, start_time, records, sender) values (#{ChattingRecordsEntity.clientId},#{ChattingRecordsEntity.startTime},#{ChattingRecordsEntity.records},#{ChattingRecordsEntity.sender});
+  </insert>
+  
+  
+    <!-- 查询全部的聊天记录 -->
+  
+  
+  <select id="selectAll" resultMap="chat_record_entity">select * from client;</select>
+  <select id="listChattingRecordsByClientId" resultMap="chat_record_entity">
+  SELECT * FROM chatting_records
+  <where>
+            <if test="_parameter.containsKey('clientId')">
+                client_id = #{clientId}
+            </if>
+        </where>
+        order by start_time
+    </select>
+    <!-- 删除七天以前的数据 -->
+    <delete id="delSevenDaysAgo">DELETE FROM chatting_records  where DATE_SUB(CURDATE(), INTERVAL 7 DAY) >= date(start_time);</delete>
+
+</mapper>

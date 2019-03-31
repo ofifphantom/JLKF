@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 崔文杰 -->
+<mapper namespace="com.jl.mis.mapper.UserManagerMapper">
+    <!-- 查询所有用户 -->
+    <select id="listUserAll" resultMap="user_entity">
+        SELECT * FROM user
+    </select>
+    <select id="listUserByLimit" resultMap="user_entity">
+        SELECT * FROM user
+        <where>
+            <if test="_parameter.containsKey('condition')">
+                ${condition}
+            </if>
+        </where>
+        LIMIT #{startNumber},#{showNumber}
+    </select>
+    <select id="listUserByCondition" resultMap="user_entity">
+        SELECT * FROM user
+        <where>
+            <if test="_parameter.containsKey('condition')">
+                ${condition}
+            </if>
+        </where>
+    </select>
+    <select id="listUserByUserName" parameterType="java.lang.String" resultMap="user_entity">
+        SELECT * FROM user
+        WHERE user_name LIKE ${userName}
+    </select>
+    <!-- 根据登录名查询用户 -->
+    <select id="getUserByLoginName" parameterType="java.lang.String" resultMap="user_entity">
+        SELECT * FROM user
+        <where>
+            <if test="loginName != null">
+                login_name = #{loginName}
+            </if>
+        </where>
+    </select>
+    <select id="countUserByLoginName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM user
+        <where>
+            <if test="loginName != null">
+                login_name = #{loginName}
+            </if>
+        </where>
+    </select>
+    <!-- 根据用户 id 查询用户 -->
+    <select id="getUserByUserId" parameterType="java.lang.Integer" resultMap="user_entity">
+        SELECT * FROM user
+        WHERE id = #{userId}
+    </select>
+    <!-- 添加用户 -->
+    <insert id="insertUser" parameterType="com.jl.mis.model.entity.UserEntity">
+        INSERT INTO `user`(user_name, user_phone, user_email, login_name, login_password, user_seat_number, user_type_id, user_status_id, user_group, administrator_or_user, create_time, is_forbidden)
+        VALUES (#{userEntity.userName},#{userEntity.userPhone},#{userEntity.userEmail},#{userEntity.loginName},#{userEntity.loginPassword},#{userEntity.userSeatNumber},#{userEntity.userTypeId},2,#{userEntity.userGroup},#{userEntity.administratorOrUser},#{userEntity.createTime},#{userEntity.isForbidden})
+    </insert>
+    <!-- 禁用用户 -->
+    <update id="disableUser" parameterType="java.lang.Integer">
+        UPDATE user
+        SET is_forbidden = #{isForbidden}
+        WHERE id = #{userId}
+    </update>
+    <update id="updateUserPassword">
+        UPDATE user
+        SET login_password = #{loginPassword}
+        WHERE id = #{userId}
+    </update>
+    <!-- 编辑用户 -->
+    <update id="updateUserById" parameterType="com.jl.mis.model.entity.UserEntity">
+        UPDATE user
+        SET user_name = #{userEntity.userName},user_email = #{userEntity.userEmail}
+          ,login_name = #{userEntity.loginName},user_seat_number = #{userEntity.userSeatNumber}
+          ,user_type_id = #{userEntity.userTypeId},user_group = #{userEntity.userGroup}
+          ,administrator_or_user = #{userEntity.administratorOrUser},is_forbidden = #{userEntity.isForbidden}
+        WHERE id = #{userEntity.id}
+    </update>
+    <!-- 用户下线 -->
+    <update id="logoutUser" parameterType="java.lang.Integer">
+        UPDATE user
+        SET user_status_id = #{identifying}
+        WHERE id = #{userId}
+    </update>
+
+    <update id="updateAccessTokenByUserName">
+        update jl_database.user
+        set token=#{token},refresh_token=#{refreshToken}
+        where login_name=#{loginName}
+    </update>
+    <resultMap id="user_entity" type="com.jl.mis.model.entity.UserEntity">
+        <id property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" />
+        <result property="userPhone" column="user_phone" javaType="java.lang.String"/>
+        <result property="userEmail" column="user_email" javaType="java.lang.String"/>
+        <result property="loginName" column="login_name" javaType="java.lang.String"/>
+        <result property="loginPassword" column="login_password" javaType="java.lang.String"/>
+        <result property="userSeatNumber" column="user_seat_number" javaType="java.lang.String"/>
+        <result property="isVip" column="is_vip" javaType="java.lang.Integer"/>
+        <result property="userTypeId" column="user_type_id" javaType="java.lang.Integer"/>
+        <result property="userStatusId" column="user_status_id" javaType="java.lang.Integer"/>
+        <result property="userGroup" column="user_group" javaType="java.lang.Integer"/>
+        <result property="administratorOrUser" column="administrator_or_user" javaType="java.lang.Integer"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+        <result property="isForbidden" column="is_forbidden" javaType="java.lang.Integer"/>
+        <result property="token" column="token" javaType="java.lang.String"/>
+        <result property="refreshToken" column="refresh_token" javaType="java.lang.String"/>
+    </resultMap>
+</mapper>

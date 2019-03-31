@@ -1,0 +1,269 @@
+@charset "utf-8";
+
+/*top begin*/
+
+.top nav li {
+	line-height: 75px;
+}
+
+.top-left li {
+	float: left;
+}
+
+.top-right li {
+	float: right;
+}
+
+.top-left li h4 {
+	margin-left: 10px;
+	line-height: 78px;
+}
+
+
+/*top end*/
+
+
+/*left begin*/
+
+#dialogListTree {
+	height: 100%;
+	padding: 10px;
+}
+
+
+/*left end*/
+
+
+/*消息  begin*/
+
+#chatMessageShow>div {
+	margin: 10px 0;
+}
+
+.messageul-left>li {
+	float: left;
+}
+
+.messageul-right>li {
+	float: right;
+}
+
+.messgae-img {
+	width: 65px;
+	height: 65px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.messgae-img img {
+	width: 65px;
+}
+
+.message-arrow {
+	width: 0;
+	height: 0;
+	font-size: 0;
+	border: solid 7px #000;
+	margin-top: 25px;
+}
+
+.message-arrow-left {
+	border-color: #fff #61b747 #fff #fff;
+}
+
+.message-arrow-right {
+	border-color: #fff #fff #fff #61b747;
+}
+
+.message-text {
+	padding: 0 15px;
+	height: 35px;
+	font-size: 14px;
+	letter-spacing: 1px;
+	line-height: 35px;
+	background: #61b747;
+	color: #fff;
+	border-radius: 5px;
+	margin: 15px auto 0;
+}
+.message-text1 {
+	padding: 0 15px;
+	height: 35px;
+	font-size: 14px;
+	letter-spacing: 1px;
+	line-height: 35px;
+	color: #fff;
+	border-radius: 5px;
+	margin: 25px auto 0;
+}
+.message-img{
+	max-width: 80%;
+	position: relative;
+	padding:5px;
+	background: #61b747;
+	border-radius: 5px;
+	margin: 15px auto 0;
+}
+.message-img img{
+	max-width: 200px;
+}
+.messgae-time span{
+	padding:2px 8px;
+	background: #e6e6e6;
+	color: white;
+	border-radius: 5px;
+}
+.message-goods{
+	padding:10px;
+	line-height: 25px;
+	background: #61b747;
+	font-size: 14px;
+	border-radius: 5px;
+	margin: 15px auto 0;
+}
+.message-goods img{
+	width: 50px;
+	height: 50px;
+	border-radius: 5px;
+	float: left;
+}
+.message-goods article{
+	float: left;
+	color: #fff;
+	margin-left: 5px;
+}
+/*消息  end*/
+
+
+/*提交  begin*/
+
+.remarks {
+	height: 79px;
+}
+
+.remarks textarea {
+	height: inherit;
+	border: none;
+}
+
+.remarks-submission {
+	height: 39px;
+	line-height: 39px;
+	padding: 0 10px;
+	border-top: 1px solid #ccc;
+}
+
+.remarks-submission .time {
+	float: left;
+}
+
+.remarks-submission input {
+	float: right;
+	margin: 7px 0;
+}
+
+
+/*提交  end*/
+
+
+/*商品列表  begin*/
+
+.search-goods {
+	position: relative;
+}
+
+.search-goods input {
+	padding-left: 35px;
+}
+
+.search-goods i {
+	position: absolute;
+	left: 10px;
+	top: 11px;
+	color: #ccc;
+	font-size: 15px;
+}
+
+.oneGoods {
+	margin: 10px 0;
+	line-height: 25px;
+}
+
+.oneGoods>div {
+	padding: 0;
+}
+
+.oneGoods input {
+	margin-top: 16px;
+	margin-right: 0;
+}
+
+.good-title span {
+	padding-right: 5px;
+}
+
+.good-id span {
+	color: #999;
+}
+
+
+/*商品列表  end*/
+
+
+/*常用语 begin*/
+
+#commonLanguageSettingDiv {
+	padding: 10px 20px 20px 20px
+}
+
+#commonLanguageSettingDiv table {
+	margin: 10px 0;
+}
+
+#commonLanguageSettingDiv table tr th {
+	text-align: center;
+}
+
+#commonLanguageSettingTree {
+	height: 100%;
+	padding: 10px;
+}
+
+.panel-tool {
+	line-height: 16px;
+}
+
+
+/*常用语 end*/
+
+.toolbar {
+	border: 1px solid #ccc;
+}
+
+.text {
+	border: 1px solid #ccc;
+	height: 400px;
+}
+
+/*WangeditTools begin*/
+#CenterTools{
+    color: #555;
+    font-size: 16px;
+    line-height: 28px;
+}
+#CenterTools i{
+	padding: 0 10px;
+}
+#CenterTools input{
+	margin-top: 2px;
+}
+#WangEdit_text{
+	height: inherit;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+}
+/*WangeditTools end*/
+.panel-header {
+    padding: 7px;
+}

@@ -1,0 +1,50 @@
+<!-- 2018/5/23-->
+<!-- 郑国超  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.UsersMapper">
+    <resultMap id="user_entity" type="com.jl.mis.model.entity.UserEntity">
+        <id property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" />
+        <result property="userPhone" column="user_phone" javaType="java.lang.String"/>
+        <result property="userEmail" column="user_email" javaType="java.lang.String"/>
+        <result property="loginName" column="login_name" javaType="java.lang.String"/>
+        <result property="loginPassword" column="login_password" javaType="java.lang.String"/>
+        <result property="userSeatNumber" column="user_seat_number" javaType="java.lang.String"/>
+        <result property="isVip" column="is_vip" javaType="java.lang.Integer"/>
+        <result property="userTypeId" column="user_type_id" javaType="java.lang.Integer"/>
+        <result property="userStatusId" column="user_status_id" javaType="java.lang.Integer"/>
+        <result property="userGroup" column="user_group" javaType="java.lang.Integer"/>
+        <result property="administratorOrUser" column="administrator_or_user" javaType="java.lang.Integer"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+        <result property="isForbidden" column="is_forbidden" javaType="java.lang.Integer"/>
+    </resultMap>
+    <!-- 查询所有客服以及管理员的信息 -->
+    <select id="selectUser" resultMap="user_entity">
+      select * from user;
+    </select>
+    <!-- 根据客服名字查询出客服的id 用做查询 -->
+    <select id="selectIdToName" resultType="java.lang.Integer">
+        select id from user where user_name=#{username};
+    </select>
+    <select id="selectUserIdByUserName" resultType="java.lang.Integer">
+        SELECT id FROM jl_database.user
+        WHERE user.user_name LIKE ${username}
+    </select>
+    <!-- 查看当前所有在线的客服 -->
+    <select id="selectUserToOnLine" resultMap="user_entity">
+      select * from user where user_status_id=#{user_status_id};
+    </select>
+    <!-- 根据客服id查看客服信息 -->
+    <select id="selectUserToId" resultMap="user_entity">
+        select * from user where id=#{id};
+    </select>
+    <!-- 根据登陆名查询客服 -->
+    <select id="selectUserToLoginName" resultMap="user_entity">
+        select * from user where login_name=#{login_name};
+    </select>
+    <!-- 修改客服在线状态 -->
+    <update id="updateToUserStatusId">
+        update user set user_status_id=#{user_status_id} where login_name=#{login_name}
+    </update>
+
+</mapper>

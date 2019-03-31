@@ -1,0 +1,37 @@
+<!-- 操作记录表 -->
+<!-- 郑国超 2018-5-20 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jl.mis.mapper.OperatingRecordMapper">
+    <resultMap id="OperatingRecordResultMap" type="com.jl.mis.model.entity.OperatingRecordEntity">
+        <result column="id" property="id"></result>
+        <result column="operating_introduce" property="operatingIntroduce"></result>
+        <result column="operating_model_type_id" property="operatingModelTypeId"></result>
+        <result column="provider_id" property="providerId"></result>
+        <result column="create_time" property="createTime"></result>
+    </resultMap>
+    <!-- 查询日志操作 -->
+    <select id="selectOperatingRecord" resultMap="OperatingRecordResultMap">
+        select * from operating_record where 1=1
+        <if test="null != provider_id">
+            and operating_record.provider_id IN (${provider_id})
+        </if>
+        <if test="operating_model_type_id>0">
+            and operating_record.operating_model_type_id=#{operating_model_type_id}
+        </if>
+        ORDER BY operating_record.create_time DESC
+        LIMIT #{startNumber},#{lengthNumber}
+    </select>
+    <select id="countOperationRecord" resultType="java.lang.Integer">
+        select COUNT(*) from operating_record where 1=1
+        <if test="null != provider_id">
+            and operating_record.provider_id IN(${provider_id})
+        </if>
+        <if test="operating_model_type_id>0">
+            and operating_record.operating_model_type_id=#{operating_model_type_id}
+        </if>
+    </select>
+    <!-- 添加操作记录 -->
+    <insert id="insertOperatingRecord">
+        INSERT INTO `operating_record`(operating_introduce, operating_model_type_id, provider_id, create_time) values (#{OperatingRecordEntity.operatingIntroduce},#{OperatingRecordEntity.operatingModelTypeId},#{OperatingRecordEntity.providerId},#{OperatingRecordEntity.createTime})
+    </insert>
+</mapper>
